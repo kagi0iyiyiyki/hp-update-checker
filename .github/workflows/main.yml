@@ -25,7 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' # 好きなPythonのバージョンを指定
+          python-version: '3.10'
 
       # 3. 必要なライブラリをインストールする
       - name: Install dependencies
@@ -33,9 +33,28 @@ jobs:
 
       # 4. メインのPythonスクリプトを実行する
       - name: Run website checker script
-        # ここに、さきほど登録したSecretsを環境変数として渡す設定を書く
         env:
+          # 前回設定したSecretsを環境変数として渡す
           WEBHOOK_A: ${{ secrets.WEBHOOK_A }}
           WEBHOOK_B: ${{ secrets.WEBHOOK_B }}
           WEBHOOK_C: ${{ secrets.WEBHOOK_C }}
         run: python hp_checker.py
+
+      # --- ここからが追加部分 ---
+
+      # 5. 変更があった場合に、結果をリポジトリにコミット＆プッシュする
+      - name: Commit and push if changed
+        run: |
+          # Gitのユーザー設定（自動コミット用）
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 変更されたファイルがあるか確認
+          if [[ -n $(git status -s) ]]; then
+            echo "Changes detected. Committing and pushing..."
+            git add previous_data/*  # previous_dataフォルダの中身をすべてステージング
+            git commit -m "Update website data files" # コミットメッセージ
+            git push # リポジトリにプッシュ
+          else
+            echo "No changes to commit."
+          fi
