@@ -5,15 +5,16 @@ name: Website Update Checker
 on:
   schedule:
     # cron形式で実行スケジュールを指定
-    # "*/5 * * * *" は「5分ごと」に実行するという意味
     - cron: '*/5 * * * *'
-  # Actionsタブから手動で実行できるようにするためのおまじない
   workflow_dispatch:
+
+# --- ここが重要：書き込み権限を与える設定 ---
+permissions:
+  contents: write
 
 # 実行する具体的な処理内容
 jobs:
   check-websites:
-    # 実行環境として最新のUbuntu（Linux）を使う
     runs-on: ubuntu-latest
 
     steps:
@@ -40,21 +41,16 @@ jobs:
           WEBHOOK_C: ${{ secrets.WEBHOOK_C }}
         run: python hp_checker.py
 
-      # --- ここからが追加部分 ---
-
       # 5. 変更があった場合に、結果をリポジトリにコミット＆プッシュする
       - name: Commit and push if changed
         run: |
-          # Gitのユーザー設定（自動コミット用）
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 変更されたファイルがあるか確認
           if [[ -n $(git status -s) ]]; then
             echo "Changes detected. Committing and pushing..."
-            git add previous_data/*  # previous_dataフォルダの中身をすべてステージング
-            git commit -m "Update website data files" # コミットメッセージ
-            git push # リポジトリにプッシュ
+            git add previous_data/*
+            git commit -m "Update website data files"
+            git push
           else
             echo "No changes to commit."
           fi
