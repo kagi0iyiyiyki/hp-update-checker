@@ -18,7 +18,7 @@ import re # ファイル名に使えない文字を削除するために追加
 # Webhook URLを環境変数（Secrets）から読み込む
 WEBHOOK_A = os.environ.get('WEBHOOK_A')
 WEBHOOK_B = os.environ.get('WEBHOOK_B')
-
+WEBHOOK_C = os.environ.get('WEBHOOK_C')
 
 MONITORING_TARGETS = {
     'NEWS': {
@@ -28,6 +28,10 @@ MONITORING_TARGETS = {
     'LIVE': {
         'url': 'https://www.thecaptains.jp/live/',
         'webhook': 'https://discord.com/api/webhooks/1407664774229262410/HR_wZOngqFe7u6Qb35WMZS1kxD4eh_ODDRAdbIO9yZvCtFVYE1_VZ7JNMZWAZbBZAi3v' # WEBHOOK_B
+    },
+    'BLOG': {
+        'url': 'https://www.fmgunma.com/captens_blog/',
+        'webhook': 'https://discord.com/api/webhooks/1407700201426391070/yuUPY3ga1s3ndKqPIyK6O2-1s3nUgqvQSy2G-NhWPQQ4DpGvNENM60NTpOhp87HdbkT9' # WEBHOOK_C
     }
 }
 
@@ -116,3 +120,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
