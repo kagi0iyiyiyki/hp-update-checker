@@ -5,7 +5,9 @@ name: Website Update Checker
 on:
   schedule:
     # cron形式で実行スケジュールを指定
+    # "*/5 * * * *" は「5分ごと」に実行するという意味
     - cron: '*/5 * * * *'
+  # Actionsタブから手動で実行できるようにするためのおまじない
   workflow_dispatch:
 
 # --- ここが重要：書き込み権限を与える設定 ---
