@@ -2,6 +2,7 @@
 name: Website Update Checker
 
 # このワークフローが実行されるタイミング
+# おまじない
 on:
   schedule:
     # cron形式で実行スケジュールを指定
