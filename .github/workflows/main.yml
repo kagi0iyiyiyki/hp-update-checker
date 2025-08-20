@@ -1,0 +1,41 @@
+# ワークフロー（一連の自動化処理）の名前
+name: Website Update Checker
+
+# このワークフローが実行されるタイミング
+on:
+  schedule:
+    # cron形式で実行スケジュールを指定
+    # "*/5 * * * *" は「5分ごと」に実行するという意味
+    - cron: '*/5 * * * *'
+  # Actionsタブから手動で実行できるようにするためのおまじない
+  workflow_dispatch:
+
+# 実行する具体的な処理内容
+jobs:
+  check-websites:
+    # 実行環境として最新のUbuntu（Linux）を使う
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードを仮想環境にコピーする
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Pythonの環境をセットアップする
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # 好きなPythonのバージョンを指定
+
+      # 3. 必要なライブラリをインストールする
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 4. メインのPythonスクリプトを実行する
+      - name: Run website checker script
+        # ここに、さきほど登録したSecretsを環境変数として渡す設定を書く
+        env:
+          WEBHOOK_A: ${{ secrets.WEBHOOK_A }}
+          WEBHOOK_B: ${{ secrets.WEBHOOK_B }}
+          WEBHOOK_C: ${{ secrets.WEBHOOK_C }}
+        run: python hp_checker.py
