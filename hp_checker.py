@@ -15,14 +15,19 @@ import re # ファイル名に使えない文字を削除するために追加
 # }
 # という形式で、カンマ(,)で区切って好きなだけ追加できます。
 
+# Webhook URLを環境変数（Secrets）から読み込む
+WEBHOOK_A = os.environ.get('WEBHOOK_A')
+WEBHOOK_B = os.environ.get('WEBHOOK_B')
+
+
 MONITORING_TARGETS = {
     'NEWS': {
         'url': 'https://www.thecaptains.jp/news',
-        'webhook': 'https://discord.com/api/webhooks/1407661947691859999/uagFLjRLlaPKZ_sVDxfHwjgLY4rX6Zjf5RMTXSpJxEA_VVThJgYe5tuL7rBKLgiS83HE' # チャンネルAのWebhook
+        'webhook': 'https://discord.com/api/webhooks/1407661947691859999/uagFLjRLlaPKZ_sVDxfHwjgLY4rX6Zjf5RMTXSpJxEA_VVThJgYe5tuL7rBKLgiS83HE' # WEBHOOK_A
     },
     'LIVE': {
         'url': 'https://www.thecaptains.jp/live/',
-        'webhook': 'https://discord.com/api/webhooks/1407664774229262410/HR_wZOngqFe7u6Qb35WMZS1kxD4eh_ODDRAdbIO9yZvCtFVYE1_VZ7JNMZWAZbBZAi3v' # チャンネルBのWebhook
+        'webhook': 'https://discord.com/api/webhooks/1407664774229262410/HR_wZOngqFe7u6Qb35WMZS1kxD4eh_ODDRAdbIO9yZvCtFVYE1_VZ7JNMZWAZbBZAi3v' # WEBHOOK_B
     }
 }
 
