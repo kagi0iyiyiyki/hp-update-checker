@@ -3,22 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import os
 import json
-import re # ファイル名に使えない文字を削除するために追加
+import re
+import difflib # 差分を比較するためのライブラリ
 
 ### 設定が必要な項目 ###
-
-# ### 変更点 ###
-# 監視したいサイトの情報をここにまとめて設定します
-# '任意の名前': {
-#     'url': '監視したいサイトのURL',
-#     'webhook': '通知を送りたいDiscordチャンネルのWebhook URL'
-# }
-# という形式で、カンマ(,)で区切って好きなだけ追加できます。
-
-# Webhook URLを環境変数（Secrets）から読み込む
-WEBHOOK_A = os.environ.get('WEBHOOK_A')
-WEBHOOK_B = os.environ.get('WEBHOOK_B')
-WEBHOOK_C = os.environ.get('WEBHOOK_C')
 
 MONITORING_TARGETS = {
     'NEWS': {
@@ -35,14 +23,9 @@ MONITORING_TARGETS = {
     }
 }
 
-
-# 前回取得したWebページの内容を保存しておくフォルダ名
 DATA_FOLDER = 'previous_data'
 
-
 ### ここから下がプログラムの本体 ###
-
-
 
 def get_website_content(url):
     """Webサイトにアクセスして、タグを除いたテキスト内容を取得する関数"""
@@ -61,8 +44,6 @@ def get_website_content(url):
 
 def send_discord_notification(message, webhook_url):
     """Discordに通知を送る関数"""
-    # ### 変更点 ###
-    # 通知先のwebhook_urlを引数で受け取るように変更
     headers = {'Content-Type': 'application/json'}
     data = {'content': message}
     try:
@@ -72,52 +53,69 @@ def send_discord_notification(message, webhook_url):
     except requests.exceptions.RequestException as e:
         print(f"エラー: Discordへの通知に失敗しました。 {e}")
 
+# ### 変更点 ###
+# 「追加」または「置換」が含まれているかを判定する新しい関数
+def has_additions(old_text, new_text):
+    """
+    2つのテキストを比較し、内容に「追加」か「置換」が含まれている場合にTrueを返す関数。
+    削除が同時にあっても、追加さえあればTrueになる。
+    """
+    old_lines = old_text.splitlines()
+    new_lines = new_text.splitlines()
+    
+    matcher = difflib.SequenceMatcher(None, old_lines, new_lines)
+    
+    # 'equal'(変更なし), 'replace'(置換), 'delete'(削除), 'insert'(追加) の操作をチェック
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        # 追加(insert)か置換(replace)が見つかった時点でTrueを返してチェック終了
+        if tag == 'insert' or tag == 'replace':
+            return True
+            
+    # ループが終わっても追加・置換がなければFalse
+    return False
+
 def main():
     """メインの処理を実行する関数"""
-    # 前回のデータを保存するフォルダがなければ作成する
     if not os.path.exists(DATA_FOLDER):
         os.makedirs(DATA_FOLDER)
-        print(f"データ保存用のフォルダ '{DATA_FOLDER}' を作成しました。")
 
-    # ### 変更点 ###
-    # 設定リスト(MONITORING_TARGETS)を一つずつ処理するループ
     for site_name, info in MONITORING_TARGETS.items():
         url = info['url']
         webhook = info['webhook']
 
         print(f"\n--- '{site_name}' ({url}) の更新をチェックします... ---")
         
-        # サイト名からファイル名として使える文字列を生成
-        safe_filename = re.sub(r'[\\/*?:"<>|]', "", site_name) # ファイル名に使えない文字を除去
+        safe_filename = re.sub(r'[\\/*?:"<>|]', "", site_name)
         data_file_path = os.path.join(DATA_FOLDER, f"{safe_filename}.txt")
         
-        # 1. 現在のWebページの内容を取得
         current_content = get_website_content(url)
         
         if current_content is None:
             continue
             
-        # 2. 前回の内容をファイルから読み込む
         previous_content = ""
         if os.path.exists(data_file_path):
             with open(data_file_path, 'r', encoding='utf-8') as f:
                 previous_content = f.read()
 
-        # 3. 前回と今回の内容を比較
+        # ### 変更点 ###
+        # 比較ロジックを新しい関数に入れ替え
         if current_content == previous_content:
             print("更新はありませんでした。")
         else:
-            print(f"'{site_name}' が更新されました！")
-            notification_message = f"[{site_name}] が更新されました。\n{url}"
-            # ### 変更点 ###
-            # そのサイトに対応するWebhook URLを使って通知を送る
-            send_discord_notification(notification_message, webhook)
-            
-            # 4. 今回の内容をサイトごとのファイルに保存
+            # 変更があった場合、「追加」か「置換」が含まれているかチェック
+            if has_additions(previous_content, current_content):
+                print(f"'{site_name}' が更新され、新しい内容が追加されました！")
+                notification_message = f"[{site_name}] が更新され、新しい情報が追加されました。\n{url}"
+                send_discord_notification(notification_message, webhook)
+            else:
+                print(f"'{site_name}' は更新されましたが、内容の追加はなく削除のみのため通知しません。")
+
+            # 変更があった場合は、通知するしないに関わらず、最新の内容を保存する
             with open(data_file_path, 'w', encoding='utf-8') as f:
                 f.write(current_content)
             print(f"新しい内容を {data_file_path} に保存しました。")
 
+
 if __name__ == '__main__':
     main()
-
