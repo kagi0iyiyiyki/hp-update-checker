@@ -41,6 +41,8 @@ leaf room 豪徳寺「結成25周年記念興行〜ザ･キャプテンズVSウ
 Thunder Snake 厚木瑠璃色薔薇楽団夜会2026〜WELCOME TO MY SHOW WORLD Ⅲ〜
 2026年5月30日(土) [東京都]
 TOP BEAT CLUBQuadrophenia
+2026年5月31日(日) [東京都]
+渋谷la.mama『PHONOGENIC GEAR ＃9 夜まで待てない！初夏のサンデー・ジャム 』
 2026年8月22日(土) [福岡県]
 福岡LIVEHOUSE CB「THE GREAT ESCAPE TOUR〜HAKATA HE IKO〜」【Day1】
 2026年8月23日(日) [福岡県]
@@ -75,6 +77,8 @@ leaf room 豪徳寺「結成25周年記念興行〜ザ･キャプテンズVSウ
 Thunder Snake 厚木瑠璃色薔薇楽団夜会2026〜WELCOME TO MY SHOW WORLD Ⅲ〜
 2026年5月30日(土) [東京都]
 TOP BEAT CLUBQuadrophenia
+2026年5月31日(日) [東京都]
+渋谷la.mama『PHONOGENIC GEAR ＃9 夜まで待てない！初夏のサンデー・ジャム 』
 2026年8月22日(土) [福岡県]
 福岡LIVEHOUSE CB「THE GREAT ESCAPE TOUR〜HAKATA HE IKO〜」【Day1】
 2026年8月23日(日) [福岡県]
@@ -97,4 +101,6 @@ TOP BEAT CLUBQuadrophenia
 渋谷la.mama『talk to you Returns Vol.2 』
 2026年5月30日(土) [東京都]
 TOP BEAT CLUBQuadrophenia
+2026年5月31日(日) [東京都]
+渋谷la.mama『PHONOGENIC GEAR ＃9 夜まで待てない！初夏のサンデー・ジャム 』
 予定はありません
