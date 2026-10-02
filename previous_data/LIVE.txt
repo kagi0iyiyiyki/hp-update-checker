@@ -31,6 +31,8 @@ leaf room 豪徳寺結成25周年記念興行「ザ･キャプテンズVSウラ
 高崎 Club JAMMERS「ザ・キャプテンズ結成25周年ワンマンツアー☆失神天国サーキット2026〜群馬編〜」
 2026年11月21日(土) [宮城県]
 仙台フルハウスモカ「FUN,FUN,FUN Vol.5」
+2026年11月28日(土) [東京都]
+新宿red cloth「LUNCHTIME SUPER SESSION」
 2026年11月29日(日) [東京都]
 吉祥寺PLANET KPlanet K×LOVE LOVE LOVE Presents「恋する惑星 vol,1」
 2026年12月5日(土) [東京都]
@@ -73,6 +75,8 @@ leaf room 豪徳寺結成25周年記念興行「ザ･キャプテンズVSウラ
 下北沢 ちょ美ひげめざせイマフェス一芸優勝！テッドせんせーのアカペラ教室！
 2026年11月1日(日) [東京都]
 下北沢 ちょ美ひげ「傷たん〜ゲーム&ライブ〜」
+2026年11月28日(土) [東京都]
+新宿red cloth「LUNCHTIME SUPER SESSION」
 2026年11月29日(日) [東京都]
 吉祥寺PLANET KPlanet K×LOVE LOVE LOVE Presents「恋する惑星 vol,1」
 2026年12月12日(土) [東京都]
